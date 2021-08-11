@@ -21,35 +21,35 @@ Run `node server` and open http://localhost:3001 in a browser. Here we go.
 
 ## Server code(server.js)
 
-// api file for interacting with MongoDB
+api file for interacting with MongoDB
 ```javascript
 const api = require('./server/routes/api');
 ```
 
-// parsers
+parsers
 ```javascript
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 ```
 
-// angular/front end code output
+angular/front end code output
 ```javascript
 app.use(express.static(path.join(__dirname, 'dist/expiryApp')));
 ```
 
-// api location
+api location
 ```javascript
 app.use('/api', api);
 ```
 
-// send requests to angular app
+send requests to angular app
 ```javascript
 api.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/expiryApp/index.html'));
 });
 ```
 
-// set port
+set port
 ```javascript
 const port = process.env.PORT || '3001';
 app.set('port', port);
@@ -66,7 +66,7 @@ server.listen(port, () => console.log(`Running on localhost: ${port}`));
 
 ## API code(server/routes/api.js)
 
-// establishing connection 
+establishing connection 
 ```javascript
 const connection = (closure) => {
   return MongoClient.connect('mongodb://localhost:27017/products', (err, db) => {
@@ -77,7 +77,7 @@ const connection = (closure) => {
 };
 ```
 
-// error case handler
+error case handler
 ```javascript
 const sendError = (err, res) => {
   response.status = 501;
@@ -86,7 +86,7 @@ const sendError = (err, res) => {
 };
 ```
 
-// success case handler
+success case handler
 ```javascript
 const response = {
   status: 200,
@@ -95,7 +95,7 @@ const response = {
 };
 ```
 
-// '/vegitables' api
+'/vegitables' api
 
 ```javascript
 router.get('/vegitables', (req, res) => {
@@ -112,7 +112,7 @@ router.get('/vegitables', (req, res) => {
 });
 ```
 
-// '/fruits' api
+'/fruits' api
 
 ```javascript
 router.get('/fruits', (req, res) => {
@@ -129,7 +129,7 @@ router.get('/fruits', (req, res) => {
 });
 ```
 
-// '/groceries' api
+'/groceries' api
 ```javascript
 router.get('/groceries', (req, res) => {
   connection((db) => {
