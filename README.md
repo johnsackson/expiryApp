@@ -22,59 +22,83 @@ Run `node server` and open http://localhost:3001 in a browser. Here we go.
 ## Server code(server.js)
 
 // api file for interacting with MongoDB
-`const api = require('./server/routes/api');`
+```javascript
+const api = require('./server/routes/api');
+```
 
 // parsers
-`app.use(bodyParser.json());`
-`app.use(bodyParser.urlencoded({ extended: false }));`
+```javascript
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+```
 
 // angular/front end code output
-`app.use(express.static(path.join(__dirname, 'dist/expiryApp')));`
+```javascript
+app.use(express.static(path.join(__dirname, 'dist/expiryApp')));
+```
 
 // api location
-`app.use('/api', api);`
+```javascript
+app.use('/api', api);
+```
 
 // send requests to angular app
-`api.get('*', (req, res) => {
+```javascript
+api.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/expiryApp/index.html'));
-});`
+});
+```
 
 // set port
-`const port = process.env.PORT || '3001';`
-`app.set('port', port);`
+```javascript
+const port = process.env.PORT || '3001';
+app.set('port', port);
+```
 
-`const server = http.createServer(app);`
+```javascript
+const server = http.createServer(app);
+```
 
-`server.listen(port, () => console.log(`Running on localhost: ${port}`));`
+```javascript
+server.listen(port, () => console.log(`Running on localhost: ${port}`));
+```
 
 
 ## API code(server/routes/api.js)
 
 // establishing connection 
-`const connection = (closure) => {
+```javascript
+const connection = (closure) => {
   return MongoClient.connect('mongodb://localhost:27017/products', (err, db) => {
     if (err) return console.log(err);
 
     closure(db);
   });
-};`
+};
+```
 
 // error case handler
-`const sendError = (err, res) => {
+```javascript
+const sendError = (err, res) => {
   response.status = 501;
   response.message = typeof err === 'object' ? err.message : err;
   res.status(501).json(response);
-};`
+};
+```
 
 // success case handler
-`const response = {
+```javascript
+const response = {
   status: 200,
   data: [],
   message: null
-};`
+};
+```
 
 // '/vegitables' api
-`router.get('/vegitables', (req, res) => {
+
+```javascript
+router.get('/vegitables', (req, res) => {
   connection((db) => {
     db.collection('vegitables')
     .find()
@@ -85,10 +109,13 @@ Run `node server` and open http://localhost:3001 in a browser. Here we go.
     })
     .catch((err) => sendError(err, res));
   });
-});`
+});
+```
 
 // '/fruits' api
-`router.get('/fruits', (req, res) => {
+
+```javascript
+router.get('/fruits', (req, res) => {
   connection((db) => {
     db.collection('fruits')
     .find()
@@ -99,10 +126,12 @@ Run `node server` and open http://localhost:3001 in a browser. Here we go.
     })
     .catch((err) => sendError(err, res));
   });
-});`
+});
+```
 
 // '/groceries' api
-`router.get('/groceries', (req, res) => {
+```javascript
+router.get('/groceries', (req, res) => {
   connection((db) => {
     db.collection('groceries')
     .find()
@@ -113,4 +142,5 @@ Run `node server` and open http://localhost:3001 in a browser. Here we go.
     })
     .catch((err) => sendError(err, res));
   });
-});`
+});
+```
